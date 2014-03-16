@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/prctl.h>
 #ifndef PR_SET_NO_NEW_PRIVS
 # define PR_SET_NO_NEW_PRIVS 38
 #endif
+
+#define WRITE(fd, str) write(fd, str, strlen(str))
 
 int main(int argc, char * argv[])
 {
@@ -13,7 +16,7 @@ int main(int argc, char * argv[])
                 return EXIT_FAILURE;
         }
         if (argc <= 1) {
-            fprintf(stderr, "nnp: missing operand\n");
+            WRITE(STDERR_FILENO, "nnp: missing operand\n");
             return EXIT_FAILURE;
         }
         return execvp(argv[1], &argv[1]);
